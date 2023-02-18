@@ -52,6 +52,90 @@ def matrix(n : int, vertices : dict, dim : int) -> list:
 test_vert = vertices_gen(3, 2)
 print(matrix(3, test_vert, 2))
 
+
+# class for a heap
+
+class MinHeap:
+    def __init__(self):
+        self.heap = []
+
+    def parent(self, i):
+        return i / 2
+
+    def left_child(self, i):
+        return 2 * i
+
+    def right_child(self, i):
+        return 2 * i + 1
+
+    def swap(self, i, j):
+        self.heap[i], self.heap[j] = self.heap[j], self.heap[i]
+
+    def insert(self, k):
+        self.heap.append(k)
+        # len(self.heap) - 1
+        i = self.heap[-1]
+        while i != 0 and self.heap[self.parent(i)][0] > self.heap[i][0]:
+            self.swap(i, self.parent(i))
+            i = self.parent(i)
+
+    def heapify(self, i):
+        l = self.left_child(i)
+        r = self.right_child(i)
+        smallest = i
+        if l < len(self.heap) and self.heap[l] < self.heap[i]:
+            smallest = l
+        if r < len(self.heap) and self.heap[r] < self.heap[smallest]:
+            smallest = r
+        if smallest != i:
+            self.swap(i, smallest)
+            self.heapify(smallest)
+
+    def extract_min(self):
+        min_val = self.heap[0]
+        self.heap[0] = self.heap[-1]
+        self.heap.pop()
+        self.heapify(0) 
+        return min_val
+
+def MST():
+    dist = []
+    prev = []
+    S = []
+    H = MinHeap()
+
+
+def prim_mst_heap_adjacency(adj_matrix):
+    n = len(adj_matrix)
+    visited = [False] * n
+    heap = [(0, 0)] # (dist, vertex)
+    mst_cost = 0
+    mst = []
+
+    while heap:
+        weight, u = MinHeap.insert()
+        if visited[u]:
+            continue
+        visited[u] = True
+        mst_cost += weight
+        if len(mst) < n - 1:
+            mst.append((u, weight))
+        else:
+            break
+        for v in range(n):
+            if not visited[v] and adj_matrix[u][v] != 0:
+                heapq.heappush(heap, (adj_matrix[u][v], v))
+
+    return mst, mst_cost
+
+
+      
+
+
+
+
+
+
 #  matrix - becusea complete so everyone conected
 # randomly generate coordinates 
 # weights = euclidian distance of these nodes
