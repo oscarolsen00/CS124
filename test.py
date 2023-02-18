@@ -49,8 +49,7 @@ def matrix(n : int, vertices : dict, dim : int) -> list:
             
                 #  gerneate new edge copy over otherewise
 
-test_vert = vertices_gen(3, 2)
-print(matrix(3, test_vert, 2))
+
 
 
 # class for a heap
@@ -101,12 +100,13 @@ class MinHeap:
 def prim_mst_heap_adjacency(adj_matrix):
     n = len(adj_matrix)
     visited = [False] * n
-    heap = [(0, 0)] # (dist, vertex)
+    heap = MinHeap()
+    heap.insert((0, 0)) # (dist, vertex)
     mst_cost = 0
     mst = []
 
     while heap:
-        weight, u = MinHeap.extract_min()
+        weight, u = MinHeap.extract_min(heap)
         if visited[u]:
             continue
         
@@ -123,8 +123,10 @@ def prim_mst_heap_adjacency(adj_matrix):
 
     return mst, mst_cost
 
+test_vert = vertices_gen(3, 2)
+print(matrix(3, test_vert, 2))
 
-      
+print(prim_mst_heap_adjacency(matrix(3, test_vert, 2)))
 
 
 
