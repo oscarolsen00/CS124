@@ -1,5 +1,4 @@
 # class to represent the graph dimensions
-
 # nodes have an extra dimension
 # weight using euclidian distance when dimension greater than 1 ortherwise weight is 
 
@@ -52,10 +51,6 @@ def matrix(n : int, vertices : dict, dim : int) -> list:
 
 test_vert = vertices_gen(3, 2)
 print(matrix(3, test_vert, 2))
-
-
-
-
 
 #  matrix - becusea complete so everyone conected
 # randomly generate coordinates 
