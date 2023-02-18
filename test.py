@@ -83,27 +83,20 @@ class MinHeap:
         l = self.left_child(i)
         r = self.right_child(i)
         smallest = i
-        if l < len(self.heap) and self.heap[l] < self.heap[i]:
+        if l < len(self.heap) and self.heap[l][0] < self.heap[i][0]:
             smallest = l
-        if r < len(self.heap) and self.heap[r] < self.heap[smallest]:
+        if r < len(self.heap) and self.heap[r][0] < self.heap[smallest][0]:
             smallest = r
         if smallest != i:
             self.swap(i, smallest)
             self.heapify(smallest)
 
     def extract_min(self):
-        min_val = self.heap[0]
+        min_tup = self.heap[0]
         self.heap[0] = self.heap[-1]
         self.heap.pop()
         self.heapify(0) 
-        return min_val
-
-def MST():
-    dist = []
-    prev = []
-    S = []
-    H = MinHeap()
-
+        return min_tup
 
 def prim_mst_heap_adjacency(adj_matrix):
     n = len(adj_matrix)
@@ -113,25 +106,25 @@ def prim_mst_heap_adjacency(adj_matrix):
     mst = []
 
     while heap:
-        weight, u = MinHeap.insert()
+        weight, u = MinHeap.extract_min()
         if visited[u]:
             continue
-        visited[u] = True
-        mst_cost += weight
+        
         if len(mst) < n - 1:
             mst.append((u, weight))
         else:
             break
         for v in range(n):
             if not visited[v] and adj_matrix[u][v] != 0:
-                heapq.heappush(heap, (adj_matrix[u][v], v))
+                MinHeap.insert(heap, (adj_matrix[u][v], v))
+        
+        visited[u] = True
+        mst_cost += weight
 
     return mst, mst_cost
 
 
       
-
-
 
 
 
