@@ -103,7 +103,7 @@ def prim_mst_heap_adjacency(adj_matrix):
     heap = MinHeap()
     heap.insert((0, 0)) # (dist, vertex)
     mst_cost = 0
-    mst = []
+    len_mst = 0
 
     while heap:
         weight, u = MinHeap.extract_min(heap)
@@ -111,10 +111,9 @@ def prim_mst_heap_adjacency(adj_matrix):
             continue
         visited[u] = True
         mst_cost += weight
-        if len(mst) < n - 1:
-            mst.append((u, weight))
-            print(mst)
-            print(visited)
+        if len_mst < n - 1:
+            len_mst += 1
+            
         else:
             break
         for v in range(n):
