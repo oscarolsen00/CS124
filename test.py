@@ -74,7 +74,6 @@ class MinHeap:
         self.heap.append(k)
         i = len(self.heap) - 1
         # i = self.heap[-1]
-        print(i)
         while i != 0 and self.heap[self.parent(i)][0] > self.heap[i][0]:
             self.swap(i, self.parent(i))
             i = self.parent(i)
