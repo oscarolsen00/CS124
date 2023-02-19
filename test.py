@@ -106,23 +106,32 @@ def prim_mst_heap_adjacency(adj_matrix):
     mst_cost = 0
     mst = []
 
-    while heap:
-        weight, u = MinHeap.extract_min(heap)
+    while heap.heap:
+        weight, u = heap.extract_min()
         if visited[u]:
             continue
         visited[u] = True
         mst_cost += weight
+        # if len(mst) < n - 1:
+        #     mst.append((u, weight))
+        #     print(mst)
+        #     print(visited)
+        # else:
+        #     break
+        # for v in range(n):
+        #     if not visited[v] and adj_matrix[u][v] != 0:
+        #         MinHeap.insert(heap, (adj_matrix[u][v], v))
         if len(mst) < n - 1:
-            mst.append((u, weight))
-            print(mst)
-            print(visited)
+            for v in range(n):
+                if not visited[v] and adj_matrix[u][v] != 0:
+                    heap.insert((adj_matrix[u][v], v))
+            if u != 0:
+                mst.append((u, heap.heap[0][1], weight))
         else:
             break
-        for v in range(n):
-            if not visited[v] and adj_matrix[u][v] != 0:
-                MinHeap.insert(heap, (adj_matrix[u][v], v))
 
-    return mst_cost
+
+    return mst, mst_cost
 
 test_vert = vertices_gen(3, 2)
 matrix_1 = matrix(3, test_vert, 2)
