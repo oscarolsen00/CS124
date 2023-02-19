@@ -59,7 +59,7 @@ class MinHeap:
         self.heap = []
 
     def parent(self, i):
-        return i / 2
+        return int(i / 2)
 
     def left_child(self, i):
         return 2 * i
@@ -72,8 +72,9 @@ class MinHeap:
 
     def insert(self, k):
         self.heap.append(k)
-        # len(self.heap) - 1
-        i = self.heap[-1]
+        i = len(self.heap) - 1
+        # i = self.heap[-1]
+        print(i)
         while i != 0 and self.heap[self.parent(i)][0] > self.heap[i][0]:
             self.swap(i, self.parent(i))
             i = self.parent(i)
@@ -109,25 +110,25 @@ def prim_mst_heap_adjacency(adj_matrix):
         weight, u = MinHeap.extract_min(heap)
         if visited[u]:
             continue
-        
+        visited[u] = True
+        mst_cost += weight
         if len(mst) < n - 1:
             mst.append((u, weight))
+            print(mst)
+            print(visited)
         else:
             break
         for v in range(n):
             if not visited[v] and adj_matrix[u][v] != 0:
                 MinHeap.insert(heap, (adj_matrix[u][v], v))
-        
-        visited[u] = True
-        mst_cost += weight
 
-    return mst, mst_cost
+    return mst_cost
 
 test_vert = vertices_gen(3, 2)
-print(matrix(3, test_vert, 2))
+matrix_1 = matrix(3, test_vert, 2)
 
-print(prim_mst_heap_adjacency(matrix(3, test_vert, 2)))
-
+print(matrix_1)
+print(prim_mst_heap_adjacency(matrix_1))
 
 
 
