@@ -1,7 +1,3 @@
-# class to represent the graph dimensions
-# nodes have an extra dimension
-# weight using euclidian distance when dimension greater than 1 ortherwise weight is 
-
 from random import uniform as rnd
 import numpy as np
 import math as mt
@@ -122,17 +118,21 @@ def prim_mst_heap_adjacency(adj_matrix):
 
     return mst_cost
 
-test_vert = vertices_gen(3, 2)
-matrix_1 = matrix(3, test_vert, 2)
+def main(dim,vertices,numtrials):
+    x = 0
+    sum = 0
+    while x != numtrials:
+        test_vert = vertices_gen(vertices, dim)
+        matrix_1 = matrix(vertices, test_vert, dim)
+        sum += prim_mst_heap_adjacency(matrix_1)
+        x += 1
+    average = sum/numtrials
 
-print(matrix_1)
-print(prim_mst_heap_adjacency(matrix_1))
+    return average
 
+Dimensions = 2
+Num_vertices = 128
+num_trials = 5
 
-
-#  matrix - becusea complete so everyone conected
-# randomly generate coordinates 
-# weights = euclidian distance of these nodes
-# list of node index to coordinates
-
-# an MST function
+print("Average =", main(Dimensions,Num_vertices,num_trials),',', "Number of vertices = ",
+         Num_vertices,',', "Number of trials = ", num_trials,',', "Dimensions = ", Dimensions)
