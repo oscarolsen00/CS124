@@ -184,19 +184,19 @@ int main() {
     Num_vertices.push_back(256);
     Num_vertices.push_back(512);
     Num_vertices.push_back(1024);
-    Num_vertices.push_back(2048);
-    Num_vertices.push_back(4096);
-    Num_vertices.push_back(8192);
-    Num_vertices.push_back(16384);
-    Num_vertices.push_back(32768);
-    Num_vertices.push_back(65536);
-    Num_vertices.push_back(131072);
-    Num_vertices.push_back(262144);
+    // Num_vertices.push_back(2048);
+    // Num_vertices.push_back(4096);
+    // Num_vertices.push_back(8192);
+    // Num_vertices.push_back(16384);
+    // Num_vertices.push_back(32768);
+    // Num_vertices.push_back(65536);
+    // Num_vertices.push_back(131072);
+    // Num_vertices.push_back(262144);
 
     vector<int> Dimensions;
 
-    Dimensions.push_back(1);
-    Dimensions.push_back(2);
+    // Dimensions.push_back(1);
+    // Dimensions.push_back(2);
     Dimensions.push_back(3);
     Dimensions.push_back(4);
 
@@ -208,6 +208,7 @@ int main() {
         for (const auto& ns : Num_vertices) {
             double result = fun1(dims, ns, num_trials);
             csv_file << result << ",";
+            csv_file << std::endl;
         }
         csv_file << "\n";
     }
