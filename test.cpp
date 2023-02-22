@@ -6,30 +6,16 @@
 #include <tuple>
 #include <cstdlib>
 #include <ctime>
+#include <fstream>
 using namespace std;
 
-double fun1(2, 4096, 5);
-
-int main() {
-    int Dimensions = 2;
-    int Num_vertices = 4096;
-    int num_trials = 5;
-
-    double result = fun1(2, 4096, 5);
-    cout << "Average = " << static_cast<double>(result) << ", "
-         << "Number of vertices = " << Num_vertices << ", "
-         << "Number of trials = " << num_trials << ", "
-         << "Dimensions = " << Dimensions << endl;
-
-    return 0;
-}
 
 double euc_dist(vector<double>& a, vector<double>& b){
-    double sum = 0;
-    for(int i=0; i<a.size(); i++){
-        sum += pow(a[i]-b[i], 2);
+    double distance = 0;
+    for (int i = 0; i < a.size(); i++) {
+        distance += pow(a[i] - b[i], 2);
     }
-    return sqrt(sum);
+    return sqrt(distance);
 }
 
 std::map<int, std::vector<double> > vertices_gen(int n, int dim) {
@@ -38,7 +24,7 @@ std::map<int, std::vector<double> > vertices_gen(int n, int dim) {
 
     for (int i = 0; i < n; i++) {
         std::vector<double> coordinates;
-        for (int j = 0; j < dim; j++) {
+        for (int j = 1; j < dim + 1; j++) {
             double coord = (double)std::rand() / RAND_MAX; // Generate a random coordinate
             coordinates.push_back(coord); // Add the coordinate to the vector
         }
@@ -54,7 +40,7 @@ vector<vector<double> > matrix(int n, map<int, vector<double> >& vertices, int d
         for(int i=0; i<n; i++){
             for(int j=0; j<n; j++){
                 if(j > i){
-                    graph[i][j] = ((double) rand() / (RAND_MAX));
+                    graph[i][j] = ((double) std::rand() / (RAND_MAX));
                 } else {
                     graph[i][j] = graph[j][i];
                 }
@@ -78,7 +64,8 @@ class MinHeap {
 public:
     vector<pair<double, int> > heap;
     int parent(int i){
-        return (i-1)/2;
+        return i/ 2;
+        // return ceil((double)i/ 2);
     }
 
     int left_child(int i){
@@ -120,9 +107,9 @@ public:
         }
     }
 
-    void push(pair<double, int> k){
-        insert(k);
-    }
+    // void push(pair<double, int> k){
+    //     insert(k);
+    // }
 
     pair<double, int> pop(){
         pair<double, int> min_tup = heap[0];
@@ -132,37 +119,37 @@ public:
         return min_tup;
     }
 
-    bool empty(){
-        return heap.empty();
-    }
+    // bool empty(){
+    //     return heap.empty();
+    // }
 };
 
 
-int prim_mst_heap_adjacency(vector<vector<double> > adj_matrix) {
+double prim_mst_heap_adjacency(vector<vector<double> > adj_matrix) {
     int n = adj_matrix.size();
     vector<bool> visited(n, false);
     MinHeap heap;
     heap.insert(std::make_pair(0, 0)); // (dist, vertex)
-    int mst_cost = 0;
+    double mst_cost = 0;
     int len_mst = 0;
 
     while (!heap.heap.empty()) {
         // int weight, u;
-        const auto [weight, u] = heap.pop();
+        const auto weight_u = heap.pop();
         // weight, u = heap.pop();
-        if (visited[u]) {
+        if (visited[weight_u.second]) {
             continue;
         }
-        visited[u] = true;
-        mst_cost += weight;
+        visited[weight_u.second] = true;
+        mst_cost += weight_u.first;
         if (len_mst < n - 1) {
             len_mst += 1;
         } else {
             break;
         }
         for (int v = 0; v < n; v++) {
-            if (!visited[v] && adj_matrix[u][v] != 0) {
-                heap.insert(std::make_pair(adj_matrix[u][v], v));
+            if (!visited[v] && adj_matrix[weight_u.second][v] != 0) {
+                heap.insert(std::make_pair(adj_matrix[weight_u.second][v], v));
             }
         }
     }
@@ -180,9 +167,64 @@ double fun1(int dim, int vertices, int numtrials) {
         x += 1;
     }
     double average = sum/numtrials;
-    cout << average;
 
     return average;
 }
 
+int main() {
+    
+    // vector<double> Num_vertices{128, 256, 512, 1024, 2048, 4096, 8192, 16384, 32768, 65536, 131072, 262144}
+    // vector<int> Num_vertices{ 128, 256 };
+    // vector<int> Dimensions{ 1, 2, 3, 4 };
+    int num_trials = 5;
 
+    vector<int> Num_vertices;
+  
+    Num_vertices.push_back(128);
+    Num_vertices.push_back(256);
+    Num_vertices.push_back(512);
+    Num_vertices.push_back(1024);
+    Num_vertices.push_back(2048);
+    Num_vertices.push_back(4096);
+    Num_vertices.push_back(8192);
+    Num_vertices.push_back(16384);
+    Num_vertices.push_back(32768);
+    Num_vertices.push_back(65536);
+    Num_vertices.push_back(131072);
+    Num_vertices.push_back(262144);
+
+    vector<int> Dimensions;
+
+    Dimensions.push_back(1);
+    Dimensions.push_back(2);
+    Dimensions.push_back(3);
+    Dimensions.push_back(4);
+
+    // Open the CSV file for writing
+    ofstream csv_file("output.csv");
+    
+    // Loop over each row of the output data and write it to the CSV
+    for (const auto& dims : Dimensions) {
+        for (const auto& ns : Num_vertices) {
+            double result = fun1(dims, ns, num_trials);
+            csv_file << result << ",";
+        }
+        csv_file << "\n";
+    }
+    
+    // Close the CSV file
+    csv_file.close();
+    
+
+    return 0;
+}
+
+
+// int Dimensions = 2;
+    // int Num_vertices = 512;
+    // int num_trials = 5;
+    // double result = fun1(Dimensions, Num_vertices, num_trials);
+    // cout << "Average = " << static_cast<double>(result) << ", "
+    //      << "Number of vertices = " << Num_vertices << ", "
+    //      << "Number of trials = " << num_trials << ", "
+    //      << "Dimensions = " << Dimensions << endl;
