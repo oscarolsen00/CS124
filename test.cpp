@@ -10,7 +10,7 @@
 using namespace std;
 
 
-double euc_dist(vector<double>& a, vector<double>& b){
+double euc_dist(const vector<double>& a,const vector<double>& b){
     double distance = 0;
     for (int i = 0; i < a.size(); i++) {
         distance += pow(a[i] - b[i], 2);
@@ -21,12 +21,18 @@ double euc_dist(vector<double>& a, vector<double>& b){
 std::map<int, std::vector<double> > vertices_gen(int n, int dim) {
     std::map<int, std::vector<double> > vertices;
     std::srand(std::time(nullptr)); // Seed the random number generator
+    // 
+    // std::random_device rd; // Use random_device instead of srand and rand
+    // std::mt19937 gen(rd()); // Use mt19937 instead of rand
+    // std::uniform_real_distribution<double> dist(0.0, 1.0);
 
     for (int i = 0; i < n; i++) {
         std::vector<double> coordinates;
         for (int j = 1; j < dim + 1; j++) {
             double coord = (double)std::rand() / RAND_MAX; // Generate a random coordinate
             coordinates.push_back(coord); // Add the coordinate to the vector
+            // // 
+            // coordinates[j] = dist(gen);
         }
         vertices.insert(std::make_pair(i, coordinates)); // Add the vector to the map
     }
@@ -36,11 +42,18 @@ std::map<int, std::vector<double> > vertices_gen(int n, int dim) {
 
 vector<vector<double> > matrix(int n, map<int, vector<double> >& vertices, int dim){
     vector<vector<double> > graph(n, vector<double>(n, 0));
+    // std::random_device rd; // Use random_device instead of srand and rand
+    // std::mt19937 gen(rd()); // Use mt19937 instead of rand
+    // std::uniform_real_distribution<double> dist(0.0, 1.0);
     if(dim == 1){
         for(int i=0; i<n; i++){
             for(int j=0; j<n; j++){
                 if(j > i){
                     graph[i][j] = ((double) std::rand() / (RAND_MAX));
+                    // // 
+                    // std::uniform_real_distribution<double>(0.0, 1.0)(std::mt19937(std::random_device()()));
+                    // graph[i][j] = dist(gen);
+
                 } else {
                     graph[i][j] = graph[j][i];
                 }
@@ -69,11 +82,11 @@ public:
     }
 
     int left_child(int i){
-        return 2*i + 1;
+        return 2*i ;
     }
 
     int right_child(int i){
-        return 2*i + 2;
+        return 2*i + 1;
     }
 
     void swap(int i, int j){
@@ -180,23 +193,23 @@ int main() {
 
     vector<int> Num_vertices;
   
-    Num_vertices.push_back(128);
-    Num_vertices.push_back(256);
-    Num_vertices.push_back(512);
-    Num_vertices.push_back(1024);
+    // Num_vertices.push_back(128);
+    // Num_vertices.push_back(256);
+    // Num_vertices.push_back(512);
+    // Num_vertices.push_back(1024);
     // Num_vertices.push_back(2048);
     // Num_vertices.push_back(4096);
     // Num_vertices.push_back(8192);
     // Num_vertices.push_back(16384);
-    // Num_vertices.push_back(32768);
-    // Num_vertices.push_back(65536);
-    // Num_vertices.push_back(131072);
-    // Num_vertices.push_back(262144);
+    Num_vertices.push_back(32768);
+    Num_vertices.push_back(65536);
+    Num_vertices.push_back(131072);
+    Num_vertices.push_back(262144);
 
     vector<int> Dimensions;
 
-    // Dimensions.push_back(1);
-    // Dimensions.push_back(2);
+    Dimensions.push_back(1);
+    Dimensions.push_back(2);
     Dimensions.push_back(3);
     Dimensions.push_back(4);
 
@@ -204,8 +217,8 @@ int main() {
     ofstream csv_file("output.csv");
     
     // Loop over each row of the output data and write it to the CSV
-    for (const auto& dims : Dimensions) {
-        for (const auto& ns : Num_vertices) {
+    for (const auto& ns : Num_vertices) {
+        for (const auto& dims : Dimensions) {
             double result = fun1(dims, ns, num_trials);
             csv_file << result << ",";
             csv_file << std::endl;
