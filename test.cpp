@@ -20,19 +20,13 @@ double euc_dist(const vector<double>& a,const vector<double>& b){
 
 std::map<int, std::vector<double> > vertices_gen(int n, int dim) {
     std::map<int, std::vector<double> > vertices;
-    std::srand(std::time(nullptr)); // Seed the random number generator
-    // 
-    // std::random_device rd; // Use random_device instead of srand and rand
-    // std::mt19937 gen(rd()); // Use mt19937 instead of rand
-    // std::uniform_real_distribution<double> dist(0.0, 1.0);
+    std::srand(std::time(nullptr)); 
 
     for (int i = 0; i < n; i++) {
         std::vector<double> coordinates;
         for (int j = 1; j < dim + 1; j++) {
-            double coord = (double)std::rand() / RAND_MAX; // Generate a random coordinate
-            coordinates.push_back(coord); // Add the coordinate to the vector
-            // // 
-            // coordinates[j] = dist(gen);
+            double coord = (double)std::rand() / RAND_MAX; 
+            coordinates.push_back(coord); 
         }
         vertices.insert(std::make_pair(i, coordinates)); // Add the vector to the map
     }
@@ -40,19 +34,40 @@ std::map<int, std::vector<double> > vertices_gen(int n, int dim) {
     return vertices;
 }
 
+// implemenation for pruing by using adjacency list instead
+// vector<vector<double> > matrix(int n,  map<int, vector<double> >& vertices, int dim){
+//     vector<vector<double> > adj_list(n);
+//     // Create the adjacency list for each vertex
+//     for (int i = 0; i < n; i++) {
+//         for (int j = 0; j < n; j++) {
+//             if (i != j) {
+//                 if (dim == 1){
+//                     double edge_weight = ((double) std::rand() / (RAND_MAX));
+//                     if (edge_weight < 0.5){
+//                         adj_list[i].push_back(edge_weight);
+//                     }
+//                 }
+//                 else{
+//                     double edge_weight = euc_dist(vertices[i], vertices[j]);
+//                     if (edge_weight < 0.5){
+//                         adj_list[i].push_back(edge_weight);
+//                     }
+                
+//                 }
+//             }
+//         }
+//     }
+//     return adj_list;
+// }
+
+
 vector<vector<double> > matrix(int n, map<int, vector<double> >& vertices, int dim){
     vector<vector<double> > graph(n, vector<double>(n, 0));
-    // std::random_device rd; // Use random_device instead of srand and rand
-    // std::mt19937 gen(rd()); // Use mt19937 instead of rand
-    // std::uniform_real_distribution<double> dist(0.0, 1.0);
     if(dim == 1){
         for(int i=0; i<n; i++){
             for(int j=0; j<n; j++){
                 if(j > i){
                     graph[i][j] = ((double) std::rand() / (RAND_MAX));
-                    // // 
-                    // std::uniform_real_distribution<double>(0.0, 1.0)(std::mt19937(std::random_device()()));
-                    // graph[i][j] = dist(gen);
 
                 } else {
                     graph[i][j] = graph[j][i];
@@ -78,7 +93,6 @@ public:
     vector<pair<double, int> > heap;
     int parent(int i){
         return i/ 2;
-        // return ceil((double)i/ 2);
     }
 
     int left_child(int i){
@@ -120,10 +134,6 @@ public:
         }
     }
 
-    // void push(pair<double, int> k){
-    //     insert(k);
-    // }
-
     pair<double, int> pop(){
         pair<double, int> min_tup = heap[0];
         heap[0] = heap[heap.size()-1];
@@ -132,9 +142,6 @@ public:
         return min_tup;
     }
 
-    // bool empty(){
-    //     return heap.empty();
-    // }
 };
 
 
@@ -160,6 +167,17 @@ double prim_mst_heap_adjacency(vector<vector<double> > adj_matrix) {
         } else {
             break;
         }
+        //implemenation for pruing by using adjacency list instead then this for loop would need to change as different lenghts of vectors within main vector
+        // vector<int> sizes;
+        // for (int i = 0; i < n; i++){
+        //     sizes.push_back(adj_matrix[weight_u.second].size());
+        //     for (int v = 0; v < sizes[i]; v++) {
+        //         if (!visited[v] && adj_matrix[weight_u.second][v] != 0) {
+        //             heap.insert(std::make_pair(adj_matrix[weight_u.second][v], v));
+        //         }
+        //     }
+        // }
+
         for (int v = 0; v < n; v++) {
             if (!visited[v] && adj_matrix[weight_u.second][v] != 0) {
                 heap.insert(std::make_pair(adj_matrix[weight_u.second][v], v));
@@ -186,21 +204,18 @@ double fun1(int dim, int vertices, int numtrials) {
 
 int main() {
     
-    // vector<double> Num_vertices{128, 256, 512, 1024, 2048, 4096, 8192, 16384, 32768, 65536, 131072, 262144}
-    // vector<int> Num_vertices{ 128, 256 };
-    // vector<int> Dimensions{ 1, 2, 3, 4 };
     int num_trials = 5;
 
     vector<int> Num_vertices;
   
-    // Num_vertices.push_back(128);
-    // Num_vertices.push_back(256);
-    // Num_vertices.push_back(512);
-    // Num_vertices.push_back(1024);
-    // Num_vertices.push_back(2048);
-    // Num_vertices.push_back(4096);
-    // Num_vertices.push_back(8192);
-    // Num_vertices.push_back(16384);
+    Num_vertices.push_back(128);
+    Num_vertices.push_back(256);
+    Num_vertices.push_back(512);
+    Num_vertices.push_back(1024);
+    Num_vertices.push_back(2048);
+    Num_vertices.push_back(4096);
+    Num_vertices.push_back(8192);
+    Num_vertices.push_back(16384);
     Num_vertices.push_back(32768);
     Num_vertices.push_back(65536);
     Num_vertices.push_back(131072);
