@@ -22,6 +22,18 @@ def vertices_gen(n : int, dim : int) -> dict:
             vertices.update({ i : [rnd(0,1),rnd(0,1), rnd(0,1), rnd(0,1)]})
     return vertices
 
+def adjacency_list(n : int, vertices : dict, dim : int):
+    graph = []
+    if dim == 1:
+        for vertex in vertices:
+            graph[vertex] = [v for v in vertices if v != vertex]
+        
+        for i in range(0,n):
+            graph[vertexi].append()
+    else:
+
+        graph[vertexi].append()
+
 def matrix(n : int, vertices : dict, dim : int) -> list:
     graph = []
     if dim == 1:
@@ -131,8 +143,19 @@ def main(dim,vertices,numtrials):
     return average
 
 Dimensions = 2
-Num_vertices = 128
+Num_vertices1 = 32768
+Num_vertices2 = 65536
+Num_vertices3 = 131072
+Num_vertices4 = 262144
 num_trials = 5
 
-print("Average =", main(Dimensions,Num_vertices,num_trials),',', "Number of vertices = ",
-         Num_vertices,',', "Number of trials = ", num_trials,',', "Dimensions = ", Dimensions)
+# print("Average 32768=", main(Dimensions,Num_vertices1,num_trials),',', "Number of vertices = ",
+#          Num_vertices1,',', "Number of trials = ", num_trials,',', "Dimensions = ", Dimensions)
+# print("Average 65536=", main(Dimensions,Num_vertices2,num_trials),',', "Number of vertices = ",
+#          Num_vertices2,',', "Number of trials = ", num_trials,',', "Dimensions = ", Dimensions)
+# print("Average 131072=", main(Dimensions,Num_vertices3,num_trials),',', "Number of vertices = ",
+#          Num_vertices3,',', "Number of trials = ", num_trials,',', "Dimensions = ", Dimensions)  
+print("Average 262144=", main(Dimensions,Num_vertices4,num_trials),',', "Number of vertices = ",
+         Num_vertices4,',', "Number of trials = ", num_trials,',', "Dimensions = ", Dimensions)          
+
+print("hello")
