@@ -105,7 +105,7 @@ def print_diagonal(matrix):
             # else:
                 # print(" ", end=" ")
         # print()
-    return sum
+    return sum//6
 
 # print_diagonal(strassen(matrixA, matrixB))
 
